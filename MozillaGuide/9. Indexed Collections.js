@@ -382,7 +382,8 @@ if(porscheCars.some(x => typeof x === 'number'));
   console.log(porscheNumberedCars); //[ 911, 718 ]
 }
 
-//Array methods: applies callback(accumulator, currentValue[, currentIndex[, array]]) 
+//Array methods: reduce(callback[, initialValue])
+//applies callback(accumulator, currentValue[, currentIndex[, array]]) 
 //for each value in the array for the purpose of reducing the list of items down to a single value. 
 //The reduce function returns the final value returned by callback function.
 
@@ -392,6 +393,74 @@ let numbers = [1, 2, 3];
 let fivePlusArrayResult = numbers.reduce((result, x) => result += x, 5);
 
 console.log(fivePlusArrayResult); //11
+
+//Note reduceRight(callback[, initialValue]) works like reduce(), but starts with the last element.
+
+//Using arrays to store other properties 1
+//Arrays can also be used like objects, to store related information.
+
+const porscheCars = ['Cayman', '911'];
+porscheCars.brand = "Porsche";
+
+porscheCars.forEach(x => console.log(`${porscheCars.brand} ${x}`)); //Porsche Cayman
+                                                                    //Porsche 911
+
+//Working with array-like objects 1
+//Some JavaScript objects, such as the NodeList returned by document.getElementsByTagName() 
+//or the arguments object made available within the body of a function, 
+//look and behave like arrays on the surface but do not share all of their methods.
+//For example the arguments object provides a length attribute but does not implement the forEach() method.
+
+function printArgumentsLength(a, b, c)
+{
+  console.log(arguments);
+  console.log(arguments.length);
+}
+
+printArgumentsLength('Cayman', '911', 3);
+//[Arguments] { '0': 'Cayman', '1': '911', '2': 3 }
+//3
+
+//Working with array-like objects 2
+//Array methods cannot be called directly on array-like objects.
+
+function printArguments(a, b, c) {
+  arguments.forEach(function(item) {  // TypeError: arguments.forEach is not a function
+    console.log(item);
+  });
+}
+
+printArguments();
+
+//Working with array-like objects 2
+//But you can call them indirectly using Function.prototype.call()
+
+function printArguments(a, b) {
+  Array.prototype.forEach.call(arguments, x => console.log(x));
+}
+
+printArguments('911', 'Vantage');
+//911
+//Vantage
+
+//Array prototype methods note on strings
+//Array prototype methods can be used on strings as well, since they provide sequential access to their characters in a similar way to arrays
+
+Array.prototype.forEach.call('a string', function(chr) {
+  console.log(chr)
+})
+// a
+ 
+// s
+// t
+// r
+// i
+// n
+// g
+
+//Typed Arrays 1
+
+
 
 
 
