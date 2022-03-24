@@ -458,7 +458,19 @@ Array.prototype.forEach.call('a string', function(chr) {
 // n
 // g
 
-//Typed Arrays 1
+//Typed Arrays
+//Typed arrays are array-like objects and provide a mechanism for accessing raw binary data.
+
+//Array Buffer
+//is a data type that is used to represent a generic, fixed-length binary data buffer. 
+//You can't directly manipulate the contents of an ArrayBuffer; instead, 
+//you create a typed array view or a DataView which represents the buffer in a specific format, and use that to read and write the contents of the buffer.
+
+//Typed Array Views
+//Typed array views have self descriptive names and provide views for all the usual numeric types like Int8, Uint32, Float64 and so forth.
+
+//We will not cover further Array Buffer and Typed Views on this file, 
+//for further information please visit: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Typed_arrays
 
 
 
