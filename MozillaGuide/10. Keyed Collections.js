@@ -63,4 +63,26 @@ console.log(cars.size)//2
 cars.clear();
 console.log(cars.size);//0
 
-//WeakMap object
+//WeakMap
+//Keys of WeakMaps are of the type Object only. Primitive data types as keys are not allowed (e.g. a Symbol can't be a WeakMap key).
+//In a WeakMap, a key object refers strongly to its contents as long as the key is not garbage collected, but weakly from then on. 
+//As such, a WeakMap does not prevent garbage collection, which eventually removes references to the key object and
+//allows garbage collection of any values if their key objects are not referenced from somewhere other than a WeakMap
+//WeakMap can be a particularly useful construct when mapping keys to information about the key that is valuable only if the key has not been garbage collected.
+//But because a WeakMap doesn't allow observing the liveness of its keys, its keys are not enumerable. There is no method to obtain a list of the keys.
+
+const privates = new WeakMap();
+
+function Public() {
+  const me = {
+    name: 'omar'
+  };
+  privates.set(this, me);
+}
+
+Public.prototype.method = function () {
+  const me = privates.get(this);
+  // Do stuff with private data in `me`...
+};
+
+module.exports = Public;
