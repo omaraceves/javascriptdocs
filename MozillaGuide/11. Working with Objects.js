@@ -59,3 +59,4 @@ myCar['color'] = 'Miami Blue';
 
 console.log(myCar['model']); //911
 console.log(myCar['color']); //Miami Blue
+
