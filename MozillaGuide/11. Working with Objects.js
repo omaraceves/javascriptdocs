@@ -233,6 +233,29 @@ console.log(listAllProperties(my911));
 //     'toLocaleString'
 //   ]
 
-//Creating Objects 1
+//Creating Objects 1 : object initializers
 //Using object initializers is sometimes referred to as creating objects with literal notation. 
 //"Object initializer" is consistent with the terminology used by C++.
+//The syntax for an object using an object initializer is:
+
+const obj = {
+  property_1:   'value1',   // property value may be an identifier...
+  2:            'value2',   // or a number...
+  // ...,
+  'property n': 'valuen'    // or a string
+};
+
+console.log(obj); //{ '2': 'value2', property_1: 'value1', 'property n': 'valuen' }
+
+//Creating Objects 2 : more object initializers
+//Object initializers are expressions, and each object initializer results 
+//in a new object being created whenever the statement in which it appears is executed. 
+//Identical object initializers create distinct objects that will not compare to 
+//each other as equal. Objects are created as if a call to new Object() were made; 
+//that is, objects made from object literal expressions are instances of Object.
+//The following example creates myPorsche with three properties. 
+//Note that the engine property is also an object with its own properties.
+
+const myPorsche = {color: 'miami blue', wheels: 4, engine: {cylinders: 4, size: 2.2}};
+
+console.log(myPorsche); //{ color: 'miami blue', wheels: 4, engine: { cylinders: 4, size: 2.2 } }
