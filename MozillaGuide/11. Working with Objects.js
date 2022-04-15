@@ -257,5 +257,61 @@ console.log(obj); //{ '2': 'value2', property_1: 'value1', 'property n': 'valuen
 //Note that the engine property is also an object with its own properties.
 
 const myPorsche = {color: 'miami blue', wheels: 4, engine: {cylinders: 4, size: 2.2}};
+const myPorsche2 = {color: 'miami blue', wheels: 4, engine: {cylinders: 4, size: 2.2}};
+const equality = myPorsche === myPorsche2;
 
-console.log(myPorsche); //{ color: 'miami blue', wheels: 4, engine: { cylinders: 4, size: 2.2 } }
+console.log(myPorsche);  //{ color: 'miami blue', wheels: 4, engine: { cylinders: 4, size: 2.2 } }
+console.log(myPorsche2); //{ color: 'miami blue', wheels: 4, engine: { cylinders: 4, size: 2.2 } }
+console.log(equality);   //false
+
+//Constructor fuctions 1
+//You can create an object following these steps
+//1.Define the object type by writing a constructor function. Use a capital initial letter.
+//2.Create an instance of the object with new.
+
+function Car(color, wheels)
+{
+  this.color = color;
+  this.wheels = wheels;
+}
+
+const myPorsche = new Car('miami blue', 4);
+
+console.log(myPorsche); //Car { color: 'miami blue', wheels: 4 }
+
+//Constructor fuctions 2
+//An object can have a property that is itself another object.
+
+function Car(color, wheels, engine)
+{
+  this.color = color;
+  this.wheels = wheels;
+  this.engine = engine;
+}
+
+const myPorsche = new Car('red', 'Carrera 21"', {cylinders: 6, type: 'boxer'}) //notice we're using an object initializer for engine.
+
+console.log(myPorsche); 
+//Car {
+//   color: 'red',
+//   wheels: 'Carrera 21"',
+//   engine: { cylinders: 6, type: 'boxer' }
+// }
+
+//Constructor functions 3
+//Lets turn the object initializer from the example above into a constructor function
+
+function Car(color, wheels, engine)
+{
+  this.color = color;
+  this.wheels = wheels;
+  this.engine = engine;
+}
+
+function Engine(cylinders, type)
+{
+  this.cylinders = cylinders;
+  this.type = type;
+}
+
+//continue here
