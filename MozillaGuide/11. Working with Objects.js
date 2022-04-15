@@ -314,4 +314,45 @@ function Engine(cylinders, type)
   this.type = type;
 }
 
-//continue here
+const porscheEngine = new Engine(6, 'boxer');
+const myPorsche = new Car('red', 'Carrera 21"', porscheEngine) //notice we're passing a whole object as parameter
+
+console.log(myPorsche);
+
+// Car {
+//   color: 'red',
+//   wheels: 'Carrera 21"',
+//   engine: Engine { cylinders: 6, type: 'boxer' }
+// }
+
+//Using Object create method 1
+//Objects can also be created using the Object.create() method. 
+//This method allows you to choose the prototype object for the object you want to create, 
+//without having to define a constructor function.
+
+const Porsche = {
+  type: 'Cayman',
+  displayType: function() {
+    console.log(this.type);
+  }
+};
+
+const myPorsche1 = Object.create(Porsche);
+myPorsche1.displayType(); //Cayman - Displays this.type
+console.log(myPorsche1); //Cayman {} - Prints object of type Cayman
+
+//Using Object creare method 2
+//You can change the type of an object created with Object create
+
+const Porsche = {
+  type: 'Cayman',
+  displayType: function() {
+    console.log(this.type);
+  }
+};
+
+const myPorsche1 = Object.create(Porsche);
+myPorsche1.type = '911';
+
+myPorsche1.displayType(); //911
+console.log(myPorsche1); //911{ type: '911' }
