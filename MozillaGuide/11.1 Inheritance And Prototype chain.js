@@ -69,6 +69,162 @@ Object.setPrototypeOf(gtsCayman, baseCayman); //baseCayman is now the base proto
 
 gtsCayman.displayMake(); //Porsche
 
+//Inheriting methods 2: Override
+//n inherited function acts just as any other property, 
+//including property shadowing (in this case, a form of method overriding).
+
+
+const baseCayman = { 
+    engine: 'Boxer Engine', 
+    displayMake: function () {
+        console.log("Porsche");
+    }};
+const gtsCayman = { 
+    wheels: '20 "', 
+    transmission: 'PDK',
+    displayMake: function () {
+        console.log("My make is Porsche."); //We are overriding displayMake
+    }
+};
+
+Object.setPrototypeOf(gtsCayman, baseCayman); //baseCayman is now the base prototype object
+
+gtsCayman.displayMake(); //My make is Porsche.
+
+// Using prototypes in Javascript 1
+//  It does not matter how you declare the function; a
+//  function in JavaScript will always have a default
+//  prototype property — with one exception: an arrow
+//  function doesn't have a default prototype property.
+
+function doSomething() {}
+console.log( doSomething.prototype );
+
+//Running the code above in a browser console results in:
+
+// {
+//     constructor: ƒ doSomething(),
+//     __proto__: {
+//       constructor: ƒ Object(),
+//       hasOwnProperty: ƒ hasOwnProperty(),
+//       isPrototypeOf: ƒ isPrototypeOf(),
+//       propertyIsEnumerable: ƒ propertyIsEnumerable(),
+//       toLocaleString: ƒ toLocaleString(),
+//       toString: ƒ toString(),
+//       valueOf: ƒ valueOf()
+//     }
+// }
+
+const doSomethingFromArrowFunction = () => {};
+console.log(doSomethingFromArrowFunction.prototype);
+
+
+//Running the code above in a browser console results in:
+
+// undefined
+
+//Objects created with syntax constructs 1: Object initializer
+// myPorsche has Object.prototype as its [[Prototype]] or __proto__
+// myPorsche does not define 'hasOwnProperty'
+// hasOwnProperty is a property that belongs to Object.prototype.
+// myPorsche inherits hasOwnProperty from Object.prototype
+// Object.prototype has null as its prototype.
+
+const myPorsche = {name: '718 Cayman'};
+
+console.log(myPorsche.hasOwnProperty); //[Function: hasOwnProperty]
+console.log(myPorsche.__proto__); //[Object: null prototype] {}
+console.log(myPorsche.__proto__.__proto__); //null
+
+//For this example the prototype chain looks like:
+// myPorsche ---> Object.prototype ---> null
+
+//Objects created with syntax constructs 2: Arrays and the prototype chain
+// Arrays inherit from Array.prototype which contains methods such as
+// indexOf, forEach, etc.
+
+const porsches = ['Cayman', '911', 'Panamera'];
+
+console.log(porsches); //[ 'Cayman', '911', 'Panamera' ]
+console.log(porsches.__proto__); //Object(0) []
+console.log(porsches.__proto__.__proto__); //[Object: null prototype] {}
+console.log(porsches.__proto__.__proto__.__proto__); //null
+
+//For this example the prototype chain looks like:
+// porsches ---> Array.prototype ---> Object.prototype ---> null
+
+//Objects created with syntax constructs 2: Functions and the prototype chain
+//Functions inherit from Function.prototype which has methods such as call, bind, etc.
+
+function renderPorsche() {
+    console.log('A beautiful Porsche 911 appears on the screen');
+  }
+
+console.log(renderPorsche); //[Function: renderPorsche]
+console.log(renderPorsche.__proto__); //{}
+console.log(renderPorsche.__proto__.__proto__); //[Object: null prototype] {}
+console.log(renderPorsche.__proto__.__proto__.__proto__); //null
+
+//For this example the prototype chain looks like:
+//renderPorsche ---> Function.prototype ---> Object.prototype ---> null
+
+//Objects created with Constructors
+//A constructor in JavaScript is just a function that happens to be called with the new operator.
+
+function Cayman() {
+    this.Name = 'Cayman';
+    this.Make = 'Porsche';
+}
+
+const myCayman = new Cayman();
+
+console.log(myCayman); //Cayman { Name: 'Cayman', Make: 'Porsche' }
+console.log(myCayman.__proto__); //{}
+console.log(myCayman.__proto__.__proto__); //[Object: null prototype] {}
+console.log(myCayman.__proto__.__proto__.__proto__); //null
+
+//// myPorsche ---> Cayman.prototype ---> Object.prototype ---> null
+
+//Objects created with Object.create
+//ECMAScript 5 introduced a new method: Object.create(). Calling this method creates a new object.
+//The prototype of this object is the first argument of the function:
+
+const porcheCar = {make: 'Porsche'}
+// porcheCar ---> Object.prototype ---> null
+
+const porsche911 = Object.create(porcheCar);
+porsche911.name = '911';
+
+console.log(porsche911); // { name: '911' }
+console.log(porsche911.__proto__); // { make: 'Porsche' }
+console.log(porsche911.__proto__.__proto__); //[Object: null prototype] {}
+console.log(porsche911.__proto__.__proto__.__proto__); //null
+
+//delete Operator with Object.create and new operator
+//Using Object.create of another object demonstrates prototypical inheritance with the delete operation
+
+const a = { a: 1 };
+const b = Object.create(a);
+
+console.log(a.a); // print 1
+console.log(b.a); // print 1
+b.a = 5;
+console.log(a.a); // print 1
+console.log(b.a); // print 5
+delete b.a;
+console.log(a.a); // print 1
+console.log(b.a); // print 1 (b.a value 5 is deleted but it showing value from its prototype chain)
+delete a.a;       // This can also be done via 'delete Object.getPrototypeOf(b).a'
+console.log(a.a); // print undefined
+console.log(b.a); // print undefined
+
+
+
+
+
+
+
+
 
 
 
