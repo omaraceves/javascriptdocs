@@ -353,6 +353,10 @@ console.log(inst.carType); //2dr cpe
 console.log(inst.make); //Porsche
 
 //Extending the proto chain, prototype assignation: 4:  Setting the __proto__ property
+//Pros: Setting __proto__ to something that is not an object only fails silently. It does not throw an exception.
+//Non-performant and deprecated. Many browsers optimize the prototype and try to guess the location of the method in the memory when calling an instance in advance; 
+//but setting the prototype dynamically disrupts all those optimizations and can even force some browsers to recompile for de-optimization of your code, 
+//to make it work according to the specs. 
 function Porsche() {}
 Porsche.prototype.carType = '2dr cpe';
 
@@ -367,6 +371,52 @@ Cayman718.prototype = proto;
 const inst = new Cayman718();
 console.log(inst.carType); //2dr cpe
 console.log(inst.make); // Porsche papa
+
+//Classes vs instances and the prototype chain 1
+//You probably already noticed that constructor functions have a special property called prototype 
+//(see above //Extending the proto chain, prototype assignation 1: New initialization).
+//This special property works with the JavaScript new operator. 
+//The REFERENCE to the prototype object is copied to the internal [[Prototype]] property of the new instance. 
+
+function Porsche() {}
+Porsche.prototype.carType = '2dr cpe';
+const porsche911 = new Porsche();
+
+console.log(Porsche.prototype); //{ carType: '2dr cpe' }
+console.log(Object.getPrototypeOf(porsche911)); //{ carType: '2dr cpe' }
+
+//Classes vs instances and the prototype chain 2
+//For example, when you do const porsche911 = new Porsche();, 
+//JavaScript (after creating the object in memory and before running function Porsche()) sets porsche911.[[Prototype]] = Porsche.prototype.
+//You can access porsche911.[[Prototype]] writing Object.getPrototypeOf(porsche911) 
+//In short, prototype is for types, while Object.getPrototypeOf() is the same for instances.
+
+function Porsche() {}
+Porsche.prototype.carType = '2dr cpe';
+const porsche911 = new Porsche();
+
+console.log(Porsche.prototype); //{ carType: '2dr cpe' }
+console.log(Object.getPrototypeOf(porsche911)); //{ carType: '2dr cpe' }
+
+
+//Classes vs instances and the prototype chain 3
+//When you then access properties of the instance, 
+//JavaScript first checks whether they exist on that object directly, and if not, it looks in [[Prototype]]. 
+//This means that all the stuff you define in prototype is effectively shared by all instances, 
+//and you can even later change parts of prototype and have the changes appear in all existing instances, if you wanted to. This is extremely powerful.
+
+function Porsche() {}
+Porsche.prototype.carType = '2dr cpe';
+const porsche911 = new Porsche();
+
+console.log(Porsche.prototype); //{ carType: '2dr cpe' }
+console.log(Object.getPrototypeOf(porsche911)); //{ carType: '2dr cpe' }
+
+Porsche.prototype.engineType = 'Rear 6 cil Boxer Engine';
+
+console.log(Porsche.prototype); //{ carType: '2dr cpe', engineType: 'Rear 6 cil Boxer Engine' }
+console.log(Object.getPrototypeOf(porsche911)); //{ carType: '2dr cpe', engineType: 'Rear 6 cil Boxer Engine' }
+
 
 
 
