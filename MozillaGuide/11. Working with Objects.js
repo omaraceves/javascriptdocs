@@ -461,3 +461,78 @@ porcheCayman.sayHi = displayCar;
 
 porsche911.sayHi(); // A Beautiful 2022 Porsche 911
 porcheCayman.sayHi(); // A Beautiful 2016 Porsche Cayman
+
+//Defining getters and setters 1
+//A getter is a method that gets the value of a specific property
+//A setter is a method that sets the value of a specific property
+//When defining getters and setters using object initializers all you need to do is to prefix a getter method with get and a setter method with set. 
+//Of course, the getter method must not expect a parameter, while the setter method expects exactly one parameter (the new value to set)
+
+const porsche718 = {
+  year: '2017',
+  get modelYear() {
+    return `Cayman 718 Model Year: ${this.year}`;
+  },
+  set caymanYearSetter(x) {
+    this.year = x;
+  }
+};
+
+console.log(porsche718.year); // 2017
+console.log(porsche718.modelYear); // Cayman 718 Model Year: 2017
+porsche718.caymanYearSetter = 2018;
+console.log(porsche718.year); // 2018
+console.log(porsche718.modelYear); // Cayman 718 Model Year: 2018
+
+//Defining getters and setters 2
+//Getters and setters can also be added to an object at any time after creation using the Object.defineProperties() method
+
+const o = { a: 0 };
+
+Object.defineProperties(o, {
+     'b': { get: function() { return this.a + 1; } },
+     'c': { set: function(x) { this.a = x / 2; } }
+});
+
+console.log(o); // { a: 0 }
+o.c = 10; // Runs the setter, which assigns 10 / 2 (5) to the 'a' property
+console.log(o); // { a: 5 }
+console.log(o.b); // Runs the getter, which yields a + 1 or 6
+
+//Deleting properties
+//You can remove a non-inherited property by using the delete operator. The following code shows how to remove a property.
+
+// Creates a new object, myobj, with two properties, a and b.
+const myobj = new Object();
+myobj.a = 5;
+myobj.b = 12;
+
+console.log(myobj); // { a: 5, b: 12 }
+delete myobj.a; // Removes the a property, leaving myobj with only the b property.
+console.log(myobj); // { b: 12 }
+
+//Comparing Objects
+//In JavaScript, objects are a reference type. Two distinct objects are never equal, even if they have the same properties. 
+//Only comparing the same object reference with itself yields true.
+
+// Two variables, two distinct objects with the same properties
+const fruit = {name: 'apple'};
+const fruitbear = {name: 'apple'};
+
+console.log(fruit == fruitbear); // false
+console.log(fruit === fruitbear); // false
+
+//Comparing Objects 2
+
+// Two variables, a single object
+const fruit = { name: 'apple'};
+const fruitbear = fruit;  // Assign fruit object reference to fruitbear
+
+// Here fruit and fruitbear are pointing to same object
+console.log(fruit == fruitbear); // true
+console.log(fruit === fruitbear); // true
+
+fruit.name = 'grape';
+console.log(fruitbear); //{ name: "grape" }
+
+
