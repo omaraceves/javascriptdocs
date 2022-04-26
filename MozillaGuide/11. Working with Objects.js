@@ -341,7 +341,7 @@ const myPorsche1 = Object.create(Porsche);
 myPorsche1.displayType(); //Cayman - Displays this.type
 console.log(myPorsche1); //Cayman {} - Prints object of type Cayman
 
-//Using Object creare method 2
+//Using Object create method 2
 //You can change the type of an object created with Object create
 
 const Porsche = {
@@ -356,3 +356,108 @@ myPorsche1.type = '911';
 
 myPorsche1.displayType(); //911
 console.log(myPorsche1); //911{ type: '911' }
+
+//Indexing Object Properties
+//You can refer to a property of an object either by its property name or by its ordinal index. 
+//If you initially define a property by its name, you must always refer to it by its name, 
+//and if you initially define a property by an index, you must always refer to it by its index.
+
+function Porsche(name, mpg)
+{
+  this.name = name;
+  this[5] = mpg;
+}
+
+const cayman = new Porsche('Cayman', '26 MPG');
+
+console.log(cayman);// Porsche { '5': '26 MPG', name: 'Cayman' }
+console.log(cayman[0]); //undefined
+console.log(cayman[5]); // 26 MPG
+console.log(cayman['name']); //Cayman
+
+//The exception to this rule is array-like objects reflected from HTML, such as the document.forms array-like object. 
+//You can always refer to objects in these array-like objects by either their ordinal number (based on where they appear in the document) 
+//or their name (if defined). For example, if the second <form> tag in a document has a name="myForm" attribute, 
+//you can refer to the form as document.forms[1] or document.forms['myForm'] or document.forms.myForm.
+
+//Defining properties for an object type
+//You can add a property to a previously defined object type by using the prototype property. 
+//This defines a property that is shared by all objects of the specified type, rather than by just one instance of the object. 
+
+function Porsche(name)
+{
+  this.name = name;
+}
+
+const cayman = new Porsche('Cayman'); 
+console.log(cayman); // Porsche { name: 'Cayman' }
+console.log(cayman.color); // undefined
+
+Porsche.prototype.color = 'White';
+
+console.log(cayman.color); // White
+
+// Defining methods 1: 
+// A method is a function associated with an object, or, put differently, a method is a property of an object that is a function. 
+// Methods are defined the way normal functions are defined, except that they have to be assigned as the property of an object. 
+// objectName.methodName = functionName;
+
+const myPorsche = {
+  myMethod: function(params) {
+    console.log("This is my method");
+  },
+
+  // this works too!
+  myOtherMethod(params) {
+    console.log("This is my other method");
+  }
+};
+
+myPorsche.myMethod(); // This is my method
+myPorsche.myOtherMethod(); // This is my other method
+
+//Defining methods 2
+//You can define a function and even use 'this' within the function.
+//And then assign it to an object
+
+function displayCar() {
+  const result = `A Beautiful ${this.year} ${this.make} ${this.model}`;
+  console.log(result);
+}
+
+function Porsche(make, model, year, owner) {
+  this.make = make;
+  this.model = model;
+  this.year = year;
+  this.owner = owner;
+  this.displayCar = displayCar; //we are assigning a previously created function.
+}
+
+const cayman = new Porsche('Porsche', 'Cayman', '2016', 'Me');
+cayman.displayCar(); //A Beautiful 2016 Porsche Cayman
+
+//Using this for object references
+//JavaScript has a special keyword, this, that you can use within a method to refer to the current object.
+
+const porsche911 = {
+  make: "Porsche",
+  year: 2022,
+  model: "911"
+}
+const porcheCayman = {
+  make: "Porsche",
+  year: 2016,
+  model: "Cayman"
+}
+
+function displayCar() {
+  const result = `A Beautiful ${this.year} ${this.make} ${this.model}`;
+  console.log(result);
+}
+
+// add sayHi function to both objects
+porsche911.sayHi = displayCar;
+porcheCayman.sayHi = displayCar;
+
+porsche911.sayHi(); // A Beautiful 2022 Porsche 911
+porcheCayman.sayHi(); // A Beautiful 2016 Porsche Cayman
