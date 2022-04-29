@@ -66,6 +66,56 @@
 //Engineer is based on WorkerBee. It adds the machine property (whose value defaults to the empty string) and 
 //also overrides the dept property with the value "engineering".
 
+//Creating the hierarchy
+
+//Employee has the properties name (whose value defaults to the empty string) and dept (whose value defaults to "general").
+function Employee() {
+    this.name = '';
+    this.dept = 'general';
+}
+
+//Manager is based on Employee. It adds the reports property (whose value defaults to an empty array, 
+//intended to have an array of Employee objects as its value).
+
+function Manager() {
+    Employee.call(this);
+    this.reports = [];
+}
+
+Manager.prototype = Object.create(Employee.prototype);
+Manager.prototype.constructor = Manager;
+
+//WorkerBee is also based on Employee. It adds the projects property (whose value defaults to an empty array, 
+//intended to have an array of strings as its value).
+
+function WorkerBee() {
+    Employee.call(this);
+    this.projects = [];
+  }
+  WorkerBee.prototype = Object.create(Employee.prototype);
+  WorkerBee.prototype.constructor = WorkerBee;
+
+//SalesPerson is based on WorkerBee. It adds the quota property (whose value defaults to 100). 
+//It also overrides the dept property with the value "sales", indicating that all salespersons are in the same department.
+
+  function SalesPerson() {
+    WorkerBee.call(this);
+    this.dept = 'sales';
+    this.quota = 100;
+ }
+ SalesPerson.prototype = Object.create(WorkerBee.prototype);
+ SalesPerson.prototype.constructor = SalesPerson;
+
+//Engineer is based on WorkerBee. It adds the machine property (whose value defaults to the empty string) and 
+//also overrides the dept property with the value "engineering".
+
+ function Engineer() {
+    WorkerBee.call(this);
+    this.dept = 'engineering';
+    this.machine = '';
+ }
+ Engineer.prototype = Object.create(WorkerBee.prototype)
+ Engineer.prototype.constructor = Engineer;
 
 
 
