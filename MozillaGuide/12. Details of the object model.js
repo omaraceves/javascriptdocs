@@ -171,7 +171,11 @@ console.log(cayman); //Porsche { make: 'Porsche' }
 console.log(cayman.country); //Germany
 console.log(cayman.seats); //undefined
 
-Porsche.prototype.seats = '4'; //adding seats property to the proto chain
+//if you add a new property to an object that is being used as the prototype for a constructor function, 
+//you add that property to all objects that inherit properties from the prototype. 
+//For example, you can add a seats property to all Porsches with the following statement
+
+Porsche.prototype.seats = '4';
 console.log(cayman.seats); //4
 
 cayman.seats = '2' //overriding assigning a local property
