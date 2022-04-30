@@ -51,21 +51,6 @@
 
 //The employee example
 //See figure: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Details_of_the_Object_Model/figure8.1.png
-
-//Employee has the properties name (whose value defaults to the empty string) and dept (whose value defaults to "general").
-
-//Manager is based on Employee. It adds the reports property (whose value defaults to an empty array, 
-//intended to have an array of Employee objects as its value).
-
-//WorkerBee is also based on Employee. It adds the projects property (whose value defaults to an empty array, 
-//intended to have an array of strings as its value).
-
-//SalesPerson is based on WorkerBee. It adds the quota property (whose value defaults to 100). 
-//It also overrides the dept property with the value "sales", indicating that all salespersons are in the same department.
-
-//Engineer is based on WorkerBee. It adds the machine property (whose value defaults to the empty string) and 
-//also overrides the dept property with the value "engineering".
-
 //Creating the hierarchy
 
 //Employee has the properties name (whose value defaults to the empty string) and dept (whose value defaults to "general").
@@ -117,6 +102,80 @@ function WorkerBee() {
  Engineer.prototype = Object.create(WorkerBee.prototype)
  Engineer.prototype.constructor = Engineer;
 
+ //Creating objects with simple definitions
 
+ var jim = new Employee;
+// Parentheses can be omitted if the
+// constructor takes no arguments.
+// jim.name is ''
+// jim.dept is 'general'
 
+var sally = new Manager;
+// sally.name is ''
+// sally.dept is 'general'
+// sally.reports is []
+
+var mark = new WorkerBee;
+// mark.name is ''
+// mark.dept is 'general'
+// mark.projects is []
+
+var fred = new SalesPerson;
+// fred.name is ''
+// fred.dept is 'sales'
+// fred.projects is []
+// fred.quota is 100
+
+var jane = new Engineer;
+// jane.name is ''
+// jane.dept is 'engineering'
+// jane.projects is []
+// jane.machine is ''
+
+//Inheriting properties 1: new operator
+//When JavaScript sees the new operator, 
+//it creates a new generic object and implicitly sets the value of the internal property [[Prototype]] 
+//to the value of Porsche.prototype
+//and passes this new generic object as the value of the this keyword to the Porsche constructor function.
+//The internal [[Prototype]] property determines the prototype chain used to return property values. 
+//Once these properties are set, JavaScript returns the new object 
+//and the assignment statement sets the variable mark to that object.
+
+function Porsche() {
+    this.make = 'Porsche';
+}
+Porsche.prototype.country = 'Germany';
+
+const cayman = new Porsche;
+console.log(cayman.make); //Porsche
+console.log(cayman.country); //Germany
+
+//Inheriting properties 2: properties from the proto chain
+//This process does not explicitly put values in the cayman object (local values) 
+//for the properties that cayman inherits from the prototype chain. 
+
+function Porsche() {
+    this.make = 'Porsche';
+}
+Porsche.prototype.country = 'Germany';
+
+const cayman = new Porsche;
+console.log(cayman); //Porsche { make: 'Porsche' }
+
+//When you ask for the value of a property, JavaScript first checks to see if the value exists in that object. 
+//If it does, that value is returned. If the value is not there locally, 
+//JavaScript checks the prototype chain (using the internal [[Prototype]] property). 
+//If an object in the prototype chain has a value for the property, that value is returned. 
+//If no such property is found, JavaScript says the object does not have the property.
+
+console.log(cayman.country); //Germany
+console.log(cayman.seats); //undefined
+
+Porsche.prototype.seats = '4'; //adding seats property to the proto chain
+console.log(cayman.seats); //4
+
+cayman.seats = '2' //overriding assigning a local property
+
+console.log(cayman.seats); //2 -  this displays cayman local value, which takes precedence over prototype value
+console.log(Object.getPrototypeOf(cayman).seats);//4 - this displays cayman prototype value
 
