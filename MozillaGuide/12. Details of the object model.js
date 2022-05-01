@@ -183,3 +183,18 @@ cayman.seats = '2' //overriding assigning a local property
 console.log(cayman.seats); //2 -  this displays cayman local value, which takes precedence over prototype value
 console.log(Object.getPrototypeOf(cayman).seats);//4 - this displays cayman prototype value
 
+//More Felxible constructors 1: javascript default values
+
+function Porsche(name, seats, options) {
+    this.make = 'Porsche';
+    this.name = name || '';
+    this.seats = seats || '4';
+    this.options = options || [];
+}
+
+const porsche718  = new Porsche('718 Cayman', 2, ['ceramic breaks', 'bose audio']);
+const porsche911 = new Porsche('911');
+
+console.log(porsche718); //Porsche {make: 'Porsche',name: '718 Cayman',seats: 2,options: [ 'ceramic breaks', 'bose audio' ]}
+console.log(porsche911); //Porsche { make: 'Porsche', name: '911', seats: '4', options: [] }
+
