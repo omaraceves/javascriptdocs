@@ -26,3 +26,23 @@ function successCallback(result) { //this is the success callback function
 createAudioFileAsync(audioSettings).then(successCallback, failureCallback); //then attaches the callbacks to the function execution
                                                                             //one of the callbacks will be executed based on the 
                                                                             //success or failure of the execution of creatueAudioFileAsync.
+
+//Guarantees
+//Unlike old fashioned passed-in callbacks, a promise comes with some guarantees:
+
+// - Callbacks added with then() will never be invoked before the completion of the current run of the JavaScript event loop.
+// - These callbacks will be invoked even if they were added after the success or failure of the asynchronous operation that the promise represents.
+// - ultiple callbacks may be added by calling then() several times. They will be invoked one after another, in the order in which they were inserted.
+
+
+//Chaining
+//By creating a promise chain, we can execute two or more asynchronous operations back to back, 
+//where each subsequent operation starts when the previous operation succeeds, with the result from the previous step
+//then() function returns a new promise, different from the original:
+
+//**Warning code that shows sintax and not runs**
+const promise = doSomething();
+const promise2 = promise.then(successCallback, failureCallback);
+
+//or
+const promise2 = doSomething().then(successCallback, failureCallback);
