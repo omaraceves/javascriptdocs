@@ -46,3 +46,54 @@ const promise2 = promise.then(successCallback, failureCallback);
 
 //or
 const promise2 = doSomething().then(successCallback, failureCallback);
+
+//This second promise (promise2) represents the completion not just of doSomething(), 
+//but also of the successCallback or failureCallback you passed in, which can be other asynchronous functions returning a promise. 
+//When that's the case, any callbacks added to promise2 get queued behind the promise returned by either successCallback or failureCallback.
+
+//Chaining 2: The pyramid of doom
+//In the old days, doing several asynchronous operations in a row would lead to the classic callback pyramid of doom:
+
+doSomething(function(result) {
+        doSomethingElse(result, function(newResult) { 
+            doThirdThing(newResult, function(finalResult) { 
+                console.log('Got the final result: ' + finalResult);
+            }, failureCallback);
+    }, failureCallback);
+  }, failureCallback);
+
+  // With modern functions, we attach our callbacks to the returned promises instead, forming a promise chain:
+
+doSomething().then(function(result) { return doSomethingElse(result); })
+    .then(function(newResult) {
+        return doThirdThing(newResult);
+    })
+    .then(function(finalResult) {
+        console.log('Got the final result: ' + finalResult);
+    })
+    .catch(failureCallback);
+
+//The arguments to then are optional, and catch(failureCallback) is short for then(null, failureCallback)
+
+doSomething().then(function(result) { 
+        return doSomethingElse(result); 
+    }, failureCallback)
+    .then(function(newResult) {
+        return doThirdThing(newResult);
+    }, failureCallback)
+    .then(function(finalResult) {
+        console.log('Got the final result: ' + finalResult);
+    }, failureCallback);
+
+//You might see this expressed with arrow functions instead. 
+//It is Important to  always return results, otherwise callbacks won't catch the result of a previous promise. 
+//with arrow functions () => x is short for () => { return x; }) and that's why we don't see an explicit 'return x'.
+
+doSomething()
+.then(result => doSomethingElse(result))
+.then(newResult => doThirdThing(newResult))
+.then(finalResult => {
+  console.log(`Got the final result: ${finalResult}`);
+})
+.catch(failureCallback);
+
