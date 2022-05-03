@@ -97,3 +97,67 @@ doSomething()
 })
 .catch(failureCallback);
 
+//Chaining 3: Chaining after a catch
+//It's possible to chain after a failure, i.e. a catch, which is useful to accomplish new actions even after an action failed in the chain. 
+//See the following example:
+
+new Promise((resolve, reject) => {
+    console.log('Initial');
+
+    resolve();
+})
+.then(() => {
+    throw new Error('Something failed');
+
+    console.log('Do this');
+})
+.catch(() => {
+    console.error('Do this if something failed');
+})
+.then(() => {
+    console.log('Do this, no matter what happened before');
+});
+
+// Initial
+// Do this if something failed
+// Do this, no matter what happened before
+
+
+//Error propagation
+//Promises solve a fundamental flaw with the callback pyramid of doom, by catching all errors, 
+//even thrown exceptions and programming errors. 
+//This is essential for functional composition of asynchronous operations.
+
+//You might recall seeing failureCallback three times in the pyramid of doom earlier, 
+//compared to only once at the end of the promise chain
+
+doSomething().then(result => doSomethingElse(result))
+.then(newResult => doThirdThing(newResult))
+.then(finalResult => console.log(`Got the final result: ${finalResult}`))
+.catch(failureCallback);
+
+//If there's an exception, the browser will look down the chain for .catch() handlers or onRejected. 
+//This is very much modeled after how synchronous code works:
+
+try {
+    const result = syncDoSomething();
+    const newResult = syncDoSomethingElse(result);
+    const finalResult = syncDoThirdThing(newResult);
+    console.log(`Got the final result: ${finalResult}`);
+  } catch(error) {
+    failureCallback(error);
+  }
+
+  //This symmetry with asynchronous code culminates in the async/await syntactic sugar in ECMAScript 2017
+
+  async function foo() {
+    try {
+      const result = await doSomething();
+      const newResult = await doSomethingElse(result);
+      const finalResult = await doThirdThing(newResult);
+      console.log(`Got the final result: ${finalResult}`);
+    } catch(error) {
+      failureCallback(error);
+    }
+  }
+
