@@ -1,6 +1,8 @@
 //Using promises
 //As seen on: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises
 
+const res = require("express/lib/response");
+
 //Promises 1: Passing callbacks into a function vs attaching callbacks to functions
 //WARNING - **The code examples shown on this section are for sintax illustration purposes, they don't run.**
 //A Promise is an object representing the eventual completion or failure of an asynchronous operation.
@@ -160,4 +162,55 @@ try {
       failureCallback(error);
     }
   }
+
+//Creating promises around an old callback api
+//A Promise can be created from scratch using its constructor. This should be needed only to wrap old APIs.
+//Some APIs still expect success and/or failure callbacks to be passed in the old way. 
+//The most obvious example is the setTimeout() function that requiers a function to be executed once a timer expires
+
+//First let's do a timeout example
+//we'll pass to timeout 2 parameters, 
+//the first parameter will be a function call (a callback), 
+//the second parameter will be a number of milliseconds.
+//the callback will get executed once a timer expires, this timer is defined by the number of milliseconds passed
+
+function printPorsche() {
+    console.log("Porsche");
+}
+
+setTimeout(printPorsche, 3000); //Porsche *after waiting for 3 seconds*
+
+//Mixing old-style callbacks and promises is problematic. 
+//If saySomething() fails or contains a programming error, nothing catches it. setTimeout is to blame for this.
+//Run the following code, the error won't be handled, the execution will explode:
+
+function printPorsche() {
+    throw new Error('Error printing Porsche');
+    console.log("Porsche");
+}
+
+setTimeout(printPorsche, 3000); //Error: Error printing Porsche
+
+//Luckily we can wrap setTimeout in a promise. 
+//The promise constructor takes an executor function that lets us resolve or reject a promise manually.
+//Since setTimeout() doesn't really fail, we left out reject in this case.
+//Best practice is to wrap problematic functions at the lowest possible level, 
+//and then never call them directly again.
+
+function printPorsche() {
+    throw new Error('Error printing Porsche');
+    console.log("Porsche");
+}
+
+//wait is a function that takes one parameter ms, and returns a promise
+//the returning promise comes from a constructor function
+//the promise constructor is taking setTimeout as executor function
+const wait = (ms) => new Promise(resolve => setTimeout(() => resolve, ms));
+
+let result = wait(3000).then(() => printPorsche())
+.catch(() => console.log('Print this if something failed'))
+.then(() => console.log(result));
+
+//note I need to continue working to understand what's up with line 208 and that resolve param.
+
 
