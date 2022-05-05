@@ -1,7 +1,6 @@
 //Using promises
 //As seen on: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises
 
-const res = require("express/lib/response");
 
 //Promises 1: Passing callbacks into a function vs attaching callbacks to functions
 //WARNING - **The code examples shown on this section are for sintax illustration purposes, they don't run.**
@@ -205,12 +204,67 @@ function printPorsche() {
 //wait is a function that takes one parameter ms, and returns a promise
 //the returning promise comes from a constructor function
 //the promise constructor is taking setTimeout as executor function
-const wait = (ms) => new Promise(resolve => setTimeout(() => resolve, ms));
+const wait = (ms) => new Promise(resolve => setTimeout(() => console.log(resolve), ms));
 
-let result = wait(3000).then(() => printPorsche())
+ wait(3000).then(() => printPorsche())
 .catch(() => console.log('Print this if something failed'))
-.then(() => console.log(result));
 
-//note I need to continue working to understand what's up with line 208 and that resolve param.
+
+//Creating a promise from scratch 1
+//This is out of the scope of mozilla docs
+//I went to youtube and saw this video: https://www.youtube.com/watch?v=OXpZfyVXeI8
+//Based on that explanation I created the following example
+
+//The promise constructor takes an executor function that lets us resolve or reject a promise manually.
+//Notice that we are using an arrow function to define the executor function.
+
+const myPromiseObject1 = new Promise((resolve, reject) => { //Begins executor function
+    let pass = true;  
+
+    if(pass)
+      resolve('Promise resoved'); //manually resolve
+    else
+      reject('Promise rejected');
+  } // Ends executor function
+);
+
+const myPromiseObject2 = new Promise((resolve, reject) => { //Begins executor function
+    let pass = false;  
+
+    if(pass)
+      resolve('Promise resoved');
+    else
+      reject('Promise rejected'); ////manually reject
+  });
+
+//The myPromiseObject1 will be manually resolved, 
+//when a promise is resolved it can return a value and pass it forward to the "then" callback
+//in our case the resolve value that will be passed forward is 'Promise resolved'
+//we are defining an arrow function inside 'then' that will be called after myPromiseObject1 resolution
+//the arrow function will capture 'Promise resolved' as its result param and then it will print it
+myPromiseObject1.then(result => console.log(result)); //'Promise resoved'
+
+
+//The myPromiseObject2 will be manually rejected, 
+//when a promise is rejected it can return a value or error and pass to the "catch" callback
+//in our case the rejected value that will be passed is 'Promise rejected'
+//we are defining an arrow function inside 'catch' that will be called after myPromiseObject2 rejection
+//the arrow function will capture 'Promise resolved' as its errorMessage param and then it will print it
+myPromiseObject2.then(result => console.log(result)).catch(errorMessage => console.log(errorMessage)); //'Promise Rejected'
+
+//Creating a promise from scratch 2
+
+function myPromise(pass) {
+  return new Promise((resolve, reject) => {
+    if(pass)
+      resolve('Promise resoved');
+    else
+      reject('Promise rejected');
+  })
+};
+
+myPromise(true).then(message => console.log(message));
+myPromise(false).then(message => console.log(message)).catch(message => console.log(message));
+
 
 
