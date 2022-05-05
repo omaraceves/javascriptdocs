@@ -234,7 +234,7 @@ const myPromiseObject2 = new Promise((resolve, reject) => { //Begins executor fu
     if(pass)
       resolve('Promise resoved');
     else
-      reject('Promise rejected'); ////manually reject
+      reject({error: 'Promise rejected', message: 'Sorry, promise rejected'}); //manually reject
   });
 
 //The myPromiseObject1 will be manually resolved, 
@@ -247,24 +247,71 @@ myPromiseObject1.then(result => console.log(result)); //'Promise resoved'
 
 //The myPromiseObject2 will be manually rejected, 
 //when a promise is rejected it can return a value or error and pass to the "catch" callback
-//in our case the rejected value that will be passed is 'Promise rejected'
+//in our case the rejected value that will be passed is a custom error object
 //we are defining an arrow function inside 'catch' that will be called after myPromiseObject2 rejection
-//the arrow function will capture 'Promise resolved' as its errorMessage param and then it will print it
-myPromiseObject2.then(result => console.log(result)).catch(errorMessage => console.log(errorMessage)); //'Promise Rejected'
+//the arrow function will capture the error object as its errorMessage param and then it will print it
+//notice the 
+myPromiseObject2.then(result => console.log(result)).catch(errorMessage => console.log(errorMessage)); //{ error: 'Promise rejected', message: 'Sorry, promise rejected' }
 
 //Creating a promise from scratch 2
+//On the precious example we were manually rejecting or resolving a promise based on 'pass' found inside the executor function
+//On this example the promise will be resolved or rejected based on an external variable.
+//We will be adding a wrapper function to the promise
+//The wrapper function will receive one param, which ultimately we'll use to resolve or reject the promise. 
 
-function myPromise(pass) {
-  return new Promise((resolve, reject) => {
-    if(pass)
+function myWrappedPromise(pass) { //wrapper function begins
+  return new Promise((resolve, reject) => { //executor function begins
+    
+    const resolver = pass; //we use the wrapping function param inside the executor function
+    
+    if(resolver)
       resolve('Promise resoved');
     else
       reject('Promise rejected');
   })
 };
 
-myPromise(true).then(message => console.log(message));
-myPromise(false).then(message => console.log(message)).catch(message => console.log(message));
+//wrapper function receives true, and returns a promise, the promise executor function uses 'true' to resolve
+//the promise then executes its next callback function within 'then'
+myWrappedPromise(true).then(message => console.log(message)); //Promise resoved
+
+//wrapper function receives false, and returns a promise, the promise executor function uses 'false' to reject
+//the promise then cacthes the rejection and executes the error handling function within catch
+myWrappedPromise(false).then(message => console.log(message)).catch(message => console.log(message));
+
+//Creating a promise from scratch 3
+//Arrow functions details and considerations from previous examples
+
+// the wrapping function found above:
+
+function myWrappedPromise(pass) { //wrapper function begins
+  return new Promise((resolve, reject) => { //executor function begins
+    
+    const resolver = pass; //we use the wrapping function param inside the executor function
+    
+    if(resolver)
+      resolve('Promise resoved');
+    else
+      reject('Promise rejected');
+  })
+};
+
+//can be written as an arrow function:
+
+const wait = (ms) => new Promise(resolve => setTimeout(() => console.log(resolve), ms));
+
+//arrow function with only one param don't require parenthesis, therefore pass has no parenthesis.
+//one statement functions don't require {} nor return, therefore the new promise block has no {} and no 'return' before it's definition
+const myWrappedPromise = pass => new Promise ((resolve, reject) => { 
+  const resolver = pass;  
+  if(resolver)
+    resolve('Promise resoved');
+  else
+    reject('Promise rejected');
+});
+
+myWrappedPromise(true).then(message => console.log(message)); //Promise resoved
+
 
 
 
