@@ -308,11 +308,26 @@ const myWrappedPromise = pass => new Promise ((resolve, reject) => {
     reject('Promise rejected');
 });
 
-const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
 
 myWrappedPromise(true).then(message => console.log(message)); //Promise resolved
 
-//watch this video: https://www.youtube.com/watch?v=DHvZLI7Db8E
+////Creating a promise from scratch 4
+//Explaining the setTimeout Mozilla example
+
+//the parameter resolve within a promise represents an anonymous function and can be typically called to resolve a function
+
+//the following executes resolve after the timer expires, 
+//so when we pass resolve to timeout we are literally passing a reference to a function
+//timeout will do someting like: wait(ms); resolve();
+const wait1 = (ms) => new Promise(resolve => setTimeout(() => resolve, ms));
+
+//however if we want to control the execution of resolve and say return a success message within it
+//we can pass to setTimeout an anonymous function and within that function declare how we want resolve to be executed
+const wait2 = (ms) => new Promise(resolve => setTimeout(() => resolve('Success message'), ms));
+
+//as we saw on previous examples, then can capture a value passed by resolved in this case 'Success message'
+wait2(2000).then((message) => console.log(message)); //Success message
 
 
 
