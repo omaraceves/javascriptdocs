@@ -336,14 +336,46 @@ wait2(2000).then((message) => console.log(message)); //Success message
 //We can start operations in parallel and wait for them all to finish like this:
 
 const promise1 = Promise.resolve(3);
+
 const promise2 = 42;
+
+//we manually resolve the promise when the timer expires using setTimeout
+//doing so, mekes the argument 'foo' irrelevant
 const promise3 = new Promise((resolve, reject) => {
-  setTimeout(resolve, 100, 'foo');
+  setTimeout(() => resolve('success!'), 3000, 'foo');
 });
 
-Promise.all([promise1, promise2, promise3]).then((values) => {
-  console.log(values);
-}); //[ 3, 42, 'foo' ]
+//Here we are passing a resolve reference to setTimeout, 
+//resulting in the return of 'foo' when the timer expires
+const promise4 = new Promise((resolve, reject) => {
+  setTimeout(resolve, 2000, 'foo');
+});
+
+Promise.all([promise1, promise2, promise3, promise4]).then((values) => {
+  console.log(values); //[ 3, 42, 'success!' 'foo' ]
+});
+
+//Composition 2: Racing promises
+//Promise.race() method returns a promise that fulfills or rejects 
+//as soon as one of the promises in an iterable fulfills or rejects, 
+//with the value or reason from that promise.
+
+const cayman0To60 = new Promise(resolve => setTimeout(resolve, 3800, 'Cayman Won!'));
+const nineEleven0To60 = new Promise(resolve => setTimeout(resolve, 3200, '911 Won!'));
+const modelX0To60 = new Promise(resolve => setTimeout(resolve, 1500, 'Tesla Won!'));
+
+Promise.race([cayman0To60, nineEleven0To60, modelX0To60]).then(winner => console.log(winner));
+
+//Timing
+//functions passed to then() will never be called synchronously, even with an already-resolved promise.
+//nstead of running immediately, the passed-in function is put on a microtask queue, 
+//which means it runs later (only after the function which created it exits, and when the JavaScript execution stack is empty), 
+//just before control is returned to the event loop
+
+Promise.resolve().then(() => console.log('End of promise then'));
+console.log('End of the program'); // End of the program
+                                   // End of promise then
+
 
 
 
