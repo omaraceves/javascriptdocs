@@ -329,6 +329,22 @@ const wait2 = (ms) => new Promise(resolve => setTimeout(() => resolve('Success m
 //as we saw on previous examples, then can capture a value passed by resolved in this case 'Success message'
 wait2(2000).then((message) => console.log(message)); //Success message
 
+//Now that we really understand how promises work, lets continue with the mozilla documentation on javascript.
+
+//Composition 1
+//Promise.all() and Promise.race() are two composition tools for running asynchronous operations in parallel.
+//We can start operations in parallel and wait for them all to finish like this:
+
+const promise1 = Promise.resolve(3);
+const promise2 = 42;
+const promise3 = new Promise((resolve, reject) => {
+  setTimeout(resolve, 100, 'foo');
+});
+
+Promise.all([promise1, promise2, promise3]).then((values) => {
+  console.log(values);
+}); //[ 3, 42, 'foo' ]
+
 
 
 
