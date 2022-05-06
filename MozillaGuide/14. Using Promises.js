@@ -197,14 +197,14 @@ setTimeout(printPorsche, 3000); //Error: Error printing Porsche
 //and then never call them directly again.
 
 function printPorsche() {
-    throw new Error('Error printing Porsche');
+    //throw new Error('Error printing Porsche');
     console.log("Porsche");
 }
 
 //wait is a function that takes one parameter ms, and returns a promise
 //the returning promise comes from a constructor function
 //the promise constructor is taking setTimeout as executor function
-const wait = (ms) => new Promise(resolve => setTimeout(() => console.log(resolve), ms));
+const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
  wait(3000).then(() => printPorsche())
 .catch(() => console.log('Print this if something failed'))
@@ -298,8 +298,6 @@ function myWrappedPromise(pass) { //wrapper function begins
 
 //can be written as an arrow function:
 
-const wait = (ms) => new Promise(resolve => setTimeout(() => console.log(resolve), ms));
-
 //arrow function with only one param don't require parenthesis, therefore pass has no parenthesis.
 //one statement functions don't require {} nor return, therefore the new promise block has no {} and no 'return' before it's definition
 const myWrappedPromise = pass => new Promise ((resolve, reject) => { 
@@ -310,7 +308,11 @@ const myWrappedPromise = pass => new Promise ((resolve, reject) => {
     reject('Promise rejected');
 });
 
-myWrappedPromise(true).then(message => console.log(message)); //Promise resoved
+const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
+myWrappedPromise(true).then(message => console.log(message)); //Promise resolved
+
+//watch this video: https://www.youtube.com/watch?v=DHvZLI7Db8E
 
 
 
