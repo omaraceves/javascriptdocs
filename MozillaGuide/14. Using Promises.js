@@ -376,6 +376,49 @@ Promise.resolve().then(() => console.log('End of promise then'));
 console.log('End of the program'); // End of the program
                                    // End of promise then
 
+//Timing 2
+//Another example of the microtask queue
+
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+wait(0).then(() => console.log(1));
+wait(0).then(console.log(2)).then(console.log(3));
+
+console.log(4); //2, 3, 4, 1
+
+//Task Queues vs Microtasks
+//Promise callbacks are handled as a Microtask whereas setTimeout() callbacks are handled as Task queues.
+
+const promise = new Promise(function(resolve, reject) {
+  console.log("Promise callback"); //This will get executed first.
+  resolve();
+}).then(function(result) {
+  console.log("Promise callback (.then)"); //This will go to the MicroTask queue
+});
+
+setTimeout(function() {
+  console.log("event-loop cycle: Promise (fulfilled)", promise)
+}, 0);
+console.log("Promise (pending)", promise); //This will get executed 2nd
+
+// Promise callback
+// Promise (pending) Promise { <pending> }
+// Promise callback (.then)
+// event-loop cycle: Promise (fulfilled) Promise { undefined }
+
+//Nesting 1
+//Simple promise chains are best kept flat without nesting, 
+//as nesting can be a result of careless composition. See common mistakes.
+//Nesting is a control structure to limit the scope of catch statements. 
+//Specifically, a nested catch only catches failures in its scope and below, 
+//not errors higher up in the chain outside the nested scope. 
+//When used correctly, this gives greater precision in error recovery
+
+doSomethingCritical().then(
+  result => doSomethingOptional(result).then(optionalResult => doSomethingExtraNice(optionalResult)).catch(e => {})
+  ) // Ignore if optional stuff fails; proceed.
+.then(() => moreCriticalStuff())
+.catch(e => console.error("Critical failure: " + e.message));
+
 
 
 
