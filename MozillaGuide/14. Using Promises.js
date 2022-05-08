@@ -413,13 +413,24 @@ console.log("Promise (pending)", promise); //This will get executed 2nd
 //not errors higher up in the chain outside the nested scope. 
 //When used correctly, this gives greater precision in error recovery
 
-doSomethingCritical().then(
-  result => doSomethingOptional(result).then(optionalResult => doSomethingExtraNice(optionalResult)).catch(e => {})
-  ) // Ignore if optional stuff fails; proceed.
-.then(() => moreCriticalStuff())
-.catch(e => console.error("Critical failure: " + e.message));
+// doSomethingCritical().then(
+//   result => doSomethingOptional(result).then(optionalResult => doSomethingExtraNice(optionalResult)).catch(e => {})
+//   ) // Ignore if optional stuff fails; proceed.
+// .then(() => moreCriticalStuff())
+// .catch(e => console.error("Critical failure: " + e.message));
 
 
+let mainPromise1 = new Promise(resolve => resolve('Main promise resolved, But Main promise 2 requiered'));
+let optionalPromise1 = new Promise(resolve => resolve('Optional promise resolved'));
+let optionalPromise2 = new Promise((resolve,reject) => reject('Error'));
+let mainPromise2  = new Promise(resolve => resolve('Main promise 2 resolved'));
 
+mainPromise1.then(result => optionalPromise1.then(message2 => optionalPromise2).catch(e => {console.log('Optional failuer, continue')})
+)
+.then(() => mainPromise2.then(message3 => console.log(message3)))
+.catch(e => console.error("Critical failure: " + e.message)); //Optional failuer, continue
+                                                              //Main promise 2 resolved
+
+//Common mistakes
 
 
