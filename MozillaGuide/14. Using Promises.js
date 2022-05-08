@@ -432,5 +432,31 @@ mainPromise1.then(result => optionalPromise1.then(message2 => optionalPromise2).
                                                               //Main promise 2 resolved
 
 //Common mistakes
+//Here are some common mistakes to watch out for when composing promise chains. 
+//Several of these mistakes manifest in the following example:
+
+doSomething().then(result => doSomethingElse(result).then(newResult => doThirdThing(newResult)))  // Nesting when it is not necessary, meaning, doThirdThing() is not optional
+.then(() => doFourthThing());
+// Forgot to terminate chain with a catch!
+
+//A good rule-of-thumb is to always either return or terminate promise chains, 
+//and as soon as you get a new promise, return it immediately, to flatten things:
+
+doSomething()
+.then(function(result) {
+  return doSomethingElse(result);
+})
+.then(newResult => doThirdThing(newResult))
+.then(() => doFourthThing())
+.catch(error => console.error(error));
+
+//Note that () => x is short for () => { return x; }.
+//Note that after the first then, function... return doSomethingElse can be converted to arrow function, result => doSomethingElse(result):
+
+doSomething()
+.then(result => doSomethingElse(result))
+.then(newResult => doThirdThing(newResult))
+.then(() => doFourthThing())
+.catch(error => console.error(error));
 
 
