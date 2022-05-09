@@ -459,4 +459,32 @@ doSomething()
 .then(() => doFourthThing())
 .catch(error => console.error(error));
 
+//Promises kind of real life example 1: Calling an api 
+//We'll be making a successful call to a real world api
+//We will be using the axios api that supports promises: https://axios-http.com/docs/intro 
+//The bored api tells us an activity to do when we are bored: https://www.boredapi.com/?ref=devresourc.es
+
+const axiosRequest = require('axios');
+
+//the axios get method returns a promise,
+//we are adding a then clause to handle the response.
+axiosRequest.get('https://www.boredapi.com/api/activity')
+.then(response => console.log('If you are bored you could: ' + response.data.activity)); //If you are bored you could: Make a bucket list
+
+//Promises kind of real life example 2: Calling an api but failing
+//We'll be making an error call to a google fake api
+
+const axiosRequest = require('axios');
+
+//the axios get method returns a promise,
+//we are adding a then clause to handle the response
+//and we are adding a catch clause to handle any potential errors
+axiosRequest.get('https://www.google.com/api/error')
+.then(response => console.log('This is the response object: ' + response.data))
+.catch(error => console.log(error)); //[AxiosError: Request failed with status code 404] {...}
+
+
+
+
+
 
