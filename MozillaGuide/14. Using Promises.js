@@ -460,7 +460,7 @@ doSomething()
 .catch(error => console.error(error));
 
 //Promises kind of real life example 1: Calling an api 
-//We'll be making a successful call to a real world api
+//We'll be making a successful call to a real world api: https://www.youtube.com/watch?v=li7FzDHYZpc
 //We will be using the axios api that supports promises: https://axios-http.com/docs/intro 
 //The bored api tells us an activity to do when we are bored: https://www.boredapi.com/?ref=devresourc.es
 
@@ -472,16 +472,40 @@ axiosRequest.get('https://www.boredapi.com/api/activity')
 .then(response => console.log('If you are bored you could: ' + response.data.activity)); //If you are bored you could: Make a bucket list
 
 //Promises kind of real life example 2: Calling an api but failing
-//We'll be making an error call to a google fake api
+//We'll be making a call to httpstat.us api: https://httpstat.us/, 
+//The call will result in a 404 triggering an error
 
 const axiosRequest = require('axios');
 
 //the axios get method returns a promise,
 //we are adding a then clause to handle the response
 //and we are adding a catch clause to handle any potential errors
-axiosRequest.get('https://www.google.com/api/error')
+axiosRequest.get('https://httpstat.us/404')
 .then(response => console.log('This is the response object: ' + response.data))
 .catch(error => console.log(error)); //[AxiosError: Request failed with status code 404] {...}
+
+//Await 1
+//The await operator is used to await for a promise. 
+//It can only be used inside an async function within regular JS code;
+//however it can be used on its own with javascript modules.
+
+const axiosRequest = require('axios');
+const res = require('express/lib/response');
+
+async function getActivity() {
+  try {
+    let response = await axiosRequest.get('https://www.boredapi.com/api/activity');
+    console.log('If you are bored you could: ' + response.data.activity); 
+  } catch(err) {
+      console.log(err);
+  }
+}
+
+getActivity(); //If you are bored you could: Make a scrapbook with pictures of your favorite memories
+
+
+
+
 
 
 
