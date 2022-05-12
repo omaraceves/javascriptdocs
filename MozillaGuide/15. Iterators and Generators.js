@@ -58,6 +58,44 @@ while (!result.done) {
 console.log(iterator.next()); //{ value: 5, done: true }
 
 //Value is 5 because that is the lenght of the sequence it created
-console.log(iterator.next()); //{ value: 5, done: true }
+console.log("Iterated over sequence of size: ", result.value); //Iterated over sequence of size:  5
 
+//Generator Functions
+//Generator functions allow you to define an iterative algorithm by writing a single function whose execution is not continuous.
+//Generator functions are written using the function* syntax.
+//When called, generator functions do not initially execute their code. 
+//Instead, they return a special type of iterator, called a Generator.
+//When a value is consumed by calling the generator's next method, 
+//the Generator function executes until it encounters the yield keyword.
+//The function can be called as many times as desired, and returns a new Generator each time.
+//Each Generator may only be iterated once.
+
+function* makeRangeIterator(start = 0, end = 100, step = 1) {
+    let iterationCount = 0;
+    for (let i = start; i < end; i += step) {
+        iterationCount++;
+        yield i;
+    }
+    return iterationCount;
+}
+
+const generator = makeRangeIterator(2, 12, 2);
+
+let result = generator.next();
+while (!result.done) {
+ console.log(result); 
+ result = generator.next();
+}
+
+// { value: 2, done: false }
+// { value: 4, done: false }
+// { value: 6, done: false }
+// { value: 8, done: false }
+// { value: 10, done: false }
+
+////After a terminating value has been yielded additional calls to next() should continue to return {done: true}
+console.log(generator.next()); //{ value: 5, done: true }
+
+//Value is 5 because that is the lenght of the sequence it created
+console.log("Iterated over sequence of size: ", result); //Iterated over sequence of size:  5
 
