@@ -93,9 +93,14 @@ while (!result.done) {
 // { value: 8, done: false }
 // { value: 10, done: false }
 
-////After a terminating value has been yielded additional calls to next() should continue to return {done: true}
-console.log(generator.next()); //{ value: 5, done: true }
+//After a terminating value has been yielded additional calls to next() should continue to return {done: true}
+//Something to notice with generators functions is that subsequent calls to next() will not give you the last value
+//for a generator was the generator was iterated, instead it will return value = null.
+//It is important to store the last value retuned by the generator just like we're doing it in our while block above.
+console.log(generator.next()); //{ value: undefined, done: true } //why this is like this? Debug this part.
 
-//Value is 5 because that is the lenght of the sequence it created
+//result hold the last value returned by the generator when its done status was returned as true for the first time:
 console.log("Iterated over sequence of size: ", result); //Iterated over sequence of size:  5
+
+
 
