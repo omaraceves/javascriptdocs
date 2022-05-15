@@ -95,12 +95,47 @@ while (!result.done) {
 
 //After a terminating value has been yielded additional calls to next() should continue to return {done: true}
 //Something to notice with generators functions is that subsequent calls to next() will not give you the last value
-//for a generator was the generator was iterated, instead it will return value = null.
+//for a generator was the generator was iterated, instead it will return value = undefined.
 //It is important to store the last value retuned by the generator just like we're doing it in our while block above.
 console.log(generator.next()); //{ value: undefined, done: true } //why this is like this? Debug this part.
 
 //result hold the last value returned by the generator when its done status was returned as true for the first time:
 console.log("Iterated over sequence of size: ", result); //Iterated over sequence of size:  5
+
+//Iterables
+//An object is iterable if it defines its iteration behavior, such as what values are looped over in a for...of construct.
+//Some built-in types, such as Array or Map, have a default iteration behavior, while other types (such as Object) do not.
+//In order to be iterable, an object must implement the @@iterator method. 
+//This means that the object (or one of the objects up its prototype chain) must have a property with a Symbol.iterator key.
+//It may be possible to iterate over an iterable more than once, or only once. It is up to the programmer to know which is the case.
+//Iterables which can iterate only once (such as Generators) customarily return this from their @@iterator method, 
+//whereas iterables which can be iterated many times must return a new iterator on each invocation of @@iterator.
+
+function* makeIterator() {
+    yield 1;
+    yield 2;
+}
+
+const it = makeIterator();
+
+for (const itItem of it) {
+    console.log(itItem);
+}
+
+console.log(it[Symbol.iterator]() === it) // true;
+
+// This example show us generator(iterator) is iterable object,
+// which has the @@iterator method return the it (itself),
+// and consequently, the it object can iterate only _once_.
+
+// If we change it's @@iterator method to a function/generator
+// which returns a new iterator/generator object, (it)
+// can iterate many times
+
+it[Symbol.iterator] = function* () {
+  yield 2;
+  yield 1;
+};
 
 
 
