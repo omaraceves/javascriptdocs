@@ -130,12 +130,51 @@ console.log(it[Symbol.iterator]() === it) // true;
 
 // If we change it's @@iterator method to a function/generator
 // which returns a new iterator/generator object, (it)
-// can iterate many times
+// can iterate many times 
 
 it[Symbol.iterator] = function* () {
   yield 2;
   yield 1;
 };
+
+
+//User defined Iterables
+//You can make your own iterables:
+
+const porscheIterable = {
+    *[Symbol.iterator]() {
+        yield '911';
+        yield 'Cayman';
+        yield 'Panamera';
+    }
+}
+
+for (let value of porscheIterable) {
+    console.log(value);
+}
+// 911
+// Cayman
+// Panamera
+
+let porsches = [...porscheIterable]; 
+console.log(porsches); //[ '911', 'Cayman', 'Panamera' ]
+
+//Built in iterables 1
+//String, Array, TypedArray, Map and Set are all built-in iterables, 
+//because their prototype objects all have a Symbol.iterator method.
+
+let myString = new String('Porsche');
+let myIterator = myString[Symbol.iterator]();
+let myChar = myIterator.next();
+
+console.log(myChar); //{ value: 'P', done: false }
+
+while(myChar.done != true) {
+    console.log(myChar.value);
+    myChar = myIterator.next();
+
+}
+
 
 
 
