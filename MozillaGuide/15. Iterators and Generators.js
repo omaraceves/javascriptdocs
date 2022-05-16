@@ -159,7 +159,7 @@ for (let value of porscheIterable) {
 let porsches = [...porscheIterable]; 
 console.log(porsches); //[ '911', 'Cayman', 'Panamera' ]
 
-//Built in iterables 1
+//Built in iterables 1 : String
 //String, Array, TypedArray, Map and Set are all built-in iterables, 
 //because their prototype objects all have a Symbol.iterator method.
 
@@ -172,9 +172,16 @@ console.log(myChar); //{ value: 'P', done: false }
 while(myChar.done != true) {
     console.log(myChar.value);
     myChar = myIterator.next();
-
 }
 
+// P
+// o
+// r
+// s
+// c
+// h
+// e
 
+console.log(myIterator.next()); // { value: undefined, done: true }
 
 
