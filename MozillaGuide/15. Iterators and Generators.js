@@ -184,4 +184,65 @@ while(myChar.done != true) {
 
 console.log(myIterator.next()); // { value: undefined, done: true }
 
+//Syntaxes expecting iterables
+//Some statements and expressions expect iterables.
+
+//for of
+for (let value of ['Cayman', '911', 'Panamera']) {
+    console.log(value);
+}
+// Cayman
+// 911
+// Panamera
+
+//deconstruction example
+let myArray = [...'abc'];
+console.log(myArray); // ["a", "b", "c"]
+
+//yield example
+function* gen() {
+    yield* ['a', 'b', 'c'];
+  }
+
+let myGenerator = gen();
+console.log(myGenerator.next()); //{ value: 'a', done: false }
+console.log(myGenerator.next()); //{ value: 'b', done: false }
+console.log(myGenerator.next()); //{ value: 'c', done: false }
+console.log(myGenerator.next()); //{ value: undefined, done: true }
+
+//Advanced generators
+//Generators compute their yielded values on demand, 
+//which allows them to efficiently represent sequences that are expensive to compute (or even infinite sequences).
+//The next() method also accepts a value, which can be used to modify the internal state of the generator. 
+//A value passed to next() will be received by yield.
+
+function* fibonacci() {
+    let current = 0;
+    let next = 1;
+    while (true) {
+      let reset = yield current; //yield here will 2 two things: it will set current as the iterator value AND it will assign whatever param comes from next into reset
+      [current, next] = [next, next + current];
+      if (reset) {
+          console.log('Generator has been reset.')
+          current = 0;
+          next = 1;
+      }
+    }
+  }
+
+  const sequence = fibonacci();
+console.log(sequence.next().value);     // 0
+console.log(sequence.next().value);     // 1
+console.log(sequence.next().value);     // 1
+console.log(sequence.next().value);     // 2
+console.log(sequence.next().value);     // 3
+console.log(sequence.next().value);     // 5
+console.log(sequence.next().value);     // 8
+console.log(sequence.next(true).value); // 0
+console.log(sequence.next().value);     // 1
+console.log(sequence.next().value);     // 1
+console.log(sequence.next().value);     // 2
+
+
+
 
