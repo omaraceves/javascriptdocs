@@ -220,7 +220,7 @@ function* fibonacci() {
     let current = 0;
     let next = 1;
     while (true) {
-      let reset = yield current; //yield here will 2 two things: it will set current as the iterator value AND it will assign whatever param comes from next into reset
+      let reset = yield current; //yield here will do two things: it will set current as the iterator value AND it will assign whatever param comes from next into reset
       [current, next] = [next, next + current];
       if (reset) {
           console.log('Generator has been reset.')
@@ -238,6 +238,7 @@ console.log(sequence.next().value);     // 2
 console.log(sequence.next().value);     // 3
 console.log(sequence.next().value);     // 5
 console.log(sequence.next().value);     // 8
+                                        //Generator has been reset.
 console.log(sequence.next(true).value); // 0
 console.log(sequence.next().value);     // 1
 console.log(sequence.next().value);     // 1
