@@ -31,5 +31,45 @@ let handler = {
 //Invariants (semantics that remain unchanged) regarding object non-extensibility or non-configurable properties are verified against the target.
 //invariants - Semantics that remain unchanged when implementing custom operations are called invariants. If you violate the invariants of a handler, a TypeError will be thrown.
 
-//Continue with examples from: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Proxy
+//handlers 1: handler.getPrototypeOf()
+//The handler.getPrototypeOf() method is a trap for the [[GetPrototypeOf]] internal method.
+
+//Porsche911 constructor
+function Porsche911 (){
+  this.name = '911'
+};
+
+//We set the prototype for Porsche911 type
+Porsche911.prototype = { make: 'Porsche' };
+
+//This is a ToyotaPrototype object instance
+const toyotaPrototype = {
+  make: 'Toyota'
+};
+
+//We set the handler to intercept the method getPrototypeOf
+const handler = {
+  getPrototypeOf(target) {
+    return toyotaPrototype;
+  }
+};
+
+//new instance of Porsche911
+const my911 = new Porsche911();
+
+//We built a new instance of proxy
+const proxy1 = new Proxy(my911, handler);
+
+//Here we print the Porsche911's prototype make and the instance name
+console.log(`My car is a ${my911.make} ${my911.name}`); // My car is a Porsche 911
+
+//Here we print the Porsche911's prototype make and the instance name using the proxy object, the proxy does nothing.
+console.log(`My car is a ${proxy1.make} ${proxy1.name}`); // My car is a Porsche 911
+
+//When calling Object.getPrototypeOf and passing proxy, his handler intrercepts the call and it returns the toyota prototype
+console.log(`My car is a ${Object.getPrototypeOf(proxy1).make} ${proxy1.name}`); //My car is a Toyota 911
+
+
+
+
 
