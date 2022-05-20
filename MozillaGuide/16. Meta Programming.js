@@ -69,6 +69,51 @@ console.log(`My car is a ${proxy1.make} ${proxy1.name}`); // My car is a Porsche
 //When calling Object.getPrototypeOf and passing proxy, his handler intrercepts the call and it returns the toyota prototype
 console.log(`My car is a ${Object.getPrototypeOf(proxy1).make} ${proxy1.name}`); //My car is a Toyota 911
 
+// Proxy 3: handler.apply()
+// The handler.apply() method is a trap for a function call.
+// The target must be a callable itself. That is, it must be a function object.
+
+function printMessage(message) {
+  console.log(message);
+}
+
+const handler = {
+  apply: function(target, thisArg, argumentList) {
+    console.log('This was added before printing your message');
+
+    target(argumentList[0]);
+  }
+}
+
+const proxyFunction = new Proxy(printMessage, handler);
+
+
+proxyFunction('This is my message'); //This was added before printing your message
+                                     //This is my message
+
+// Proxy 4: handler.construct()
+// The handler.construct() method is a trap for the new operator. 
+// In order for the new operation to be valid on the resulting Proxy object, 
+// the target used to initialize the proxy must itself have a [[Construct]] internal method
+
+function porsche(model) {
+  this.model = model;
+}
+
+const handler1 = {
+  construct(target, args) {
+    this.make = 'Porsche';
+
+    return new target(...args);
+  }
+};
+
+const proxy1 = new Proxy(porsche, handler1);
+
+console.log(new proxy1('911').make);
+
+
+
 
 
 
