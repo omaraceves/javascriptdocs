@@ -95,22 +95,29 @@ proxyFunction('This is my message'); //This was added before printing your messa
 // The handler.construct() method is a trap for the new operator. 
 // In order for the new operation to be valid on the resulting Proxy object, 
 // the target used to initialize the proxy must itself have a [[Construct]] internal method
+// On The following example, we'll use a handler to intercept the new Car constructor and make it a Porsche!
 
-function porsche(model) {
+function Car(model) {
   this.model = model;
 }
 
 const handler1 = {
   construct(target, args) {
-    this.make = 'Porsche';
+    let myResult = new target(...args);
+    myResult.make = 'Porsche';
 
-    return new target(...args);
+    return myResult;
   }
 };
 
-const proxy1 = new Proxy(porsche, handler1);
+const proxyCar = new Proxy(Car, handler1);
 
-console.log(new proxy1('911').make);
+const my911 = new Car('911');
+const myPorsche911 = new proxyCar('911');
+
+console.log(my911.make, my911.model); // undefined 911
+console.log(myPorsche911.make, myPorsche911.model); //Porsche 911
+
 
 
 
