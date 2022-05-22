@@ -118,6 +118,28 @@ const myPorsche911 = new proxyCar('911');
 console.log(my911.make, my911.model); // undefined 911
 console.log(myPorsche911.make, myPorsche911.model); //Porsche 911
 
+//Revocable Proxy
+//The Proxy.revocable() method is used to create a revocable Proxy object. 
+//This means that the proxy can be revoked via the function revoke and switches the proxy off.
+//Afterwards, any operation on the proxy leads to a TypeError.
+
+let revocable = Proxy.revocable({}, {
+  get: function(target, name) {
+    return 'Property Name: ' + name;
+  }
+});
+
+let proxy = revocable.proxy;
+console.log(proxy.carModelName)  // Property Name: carModelName
+
+revocable.revoke();
+
+console.log(proxy.carModelName);  // TypeError is thrown
+proxy.carModelName = 'Cayman';  // TypeError again
+delete proxy.foo;        // still TypeError
+typeof proxy;            // "object", typeof doesn't trigger any trap
+
+
 
 
 
