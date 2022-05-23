@@ -1,6 +1,8 @@
 //Meta Programming
 //As seen on: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Meta_programming
 
+const res = require("express/lib/response")
+
 //Starting with ECMAScript 2015, JavaScript gains support for the Proxy and Reflect objects 
 //allowing you to intercept and define custom behavior for fundamental language operations 
 //(e.g. property lookup, assignment, enumeration, function invocation, etc). 
@@ -240,7 +242,45 @@ console.log(myCar2); //{ name: 'Cayman GT4' }
 console.log(Object.getPrototypeOf(myCar2)); //{ make: 'Porsche' }
 console.log(myCar2.make, myCar2.name); //Porsche Cayman GT4
 
-//Reflect 6: 
+//Reflect 6: defineProperty()
+//The static Reflect.defineProperty() method is like Object.defineProperty() but returns a Boolean.
+//Note: Object.defineProperty returns the object or throws a TypeError if the property has not been successfully defined. 
+//Reflect.defineProperty, however, returns a Boolean indicating whether or not the property was successfully defined.
+
+let myPorsche = {
+  name: '911'
+}
+var result = Reflect.defineProperty(myPorsche, 'make', {value: 'Porsche'});
+
+console.log(result); //true
+console.log(myPorsche);  //{ name: '911' } I'm not sure why the object doesn't print make as well, only the original name.
+console.log(myPorsche.make);  //Porsche
+console.log(Reflect.ownKeys(myPorsche)); //[ 'name', 'make' ]
+
+//Reflect 7: deleteProperty()
+//The static Reflect.deleteProperty() method allows to delete properties. 
+//It is like the delete operator as a function.
+
+let myPorsche = {
+  name: 'Cayman',
+  make: 'Porsche',
+  numberOfSeats: '4'
+}
+
+let result = Reflect.deleteProperty(myPorsche, 'numberOfSeats');
+console.log(result); //true
+console.log(myPorsche); //{ name: 'Cayman', make: 'Porsche' }
+
+//Reflect 8: The static Reflect.get() method works like 
+//getting a property from an object (target[propertyKey]) as a function.
+
+const myPorsche = {
+  name: 'Cayman',
+  make: 'Porsche'
+};
+
+let result = console.log(Reflect.get(myPorsche, 'make')); //Porsche
+
 
 
 
