@@ -215,7 +215,32 @@ const porsche911 = {
 //args of apply should be: pointer to a function, the value of "this" used by the function, the arguments passed to a function in the form of an array 
 Reflect.apply(porsche911.displayName, porsche911, ['GT2RS']); //Porsche 911 GT2RS
 
+//Reflect 5: construct method
+//Creating a new object and overriding its prototype by passing the 'newTarget' argument.
 
+function car(name) {
+  this.name = name;
+}
+
+function sportsCar(name) {
+  this.name = name;
+}
+
+const porscheProto = {
+  make: 'Porsche'
+}
+sportsCar.prototype = porscheProto;
+
+let myCar1 = new car('Tacoma');
+console.log(myCar1); //car { name: 'Tacoma' }
+console.log(Object.getPrototypeOf(myCar1)); //{}
+
+let myCar2 = Reflect.construct(car, ['Cayman GT4'], sportsCar);
+console.log(myCar2); //{ name: 'Cayman GT4' }
+console.log(Object.getPrototypeOf(myCar2)); //{ make: 'Porsche' }
+console.log(myCar2.make, myCar2.name); //Porsche Cayman GT4
+
+//Reflect 6: 
 
 
 
