@@ -140,6 +140,81 @@ delete proxy.foo;        // still TypeError
 typeof proxy;            // "object", typeof doesn't trigger any trap
 
 
+//Reflection: Intro
+//Reflect is a built-in object that provides methods for interceptable JavaScript operations. T
+//he methods are the same as those of proxy handlers. Reflect is not a function object, so it's not constructible.
+//Unlike most global objects, Reflect is not a constructor. 
+//You cannot use it with a new operator or invoke the Reflect object as a function. 
+//All properties and methods of Reflect are static (just like the Math object).
+//Reflect static functions have the same names as the proxy handler methods.
+//Some of these methods are also the same as corresponding methods on Object, although they do have some subtle differences between them.
+
+//Reflection 1: has method
+//Detecting whether an object contains certain properties
+
+const porsche911 = {
+  make: 'Porsche',
+  name: '911',
+  displayName: function() {
+    console.log(`${this.make} ${this.name}`);
+  }
+}
+
+let hasMake = Reflect.has(porsche911, 'make'); 
+let hasCylinders = Reflect.has(porsche911, 'cylinders');
+
+console.log(hasMake); //true
+console.log(hasCylinders); //false
+
+//Reflection 2: ownKeys method
+//Returning the object's own keys
+
+const porsche911 = {
+  make: 'Porsche',
+  name: '911',
+  displayName: function() {
+    console.log(`${this.make} ${this.name}`);
+  }
+}
+
+let keys = Reflect.ownKeys(porsche911);
+console.log(keys); //[ 'make', 'name', 'displayName' ]
+
+//Reflection 3: set method
+//Adding a new property to the object
+
+const porsche911 = {
+  make: 'Porsche',
+  name: '911',
+  displayName: function() {
+    console.log(`${this.make} ${this.name}`);
+  }
+}
+
+Reflect.set(porsche911, 'cylinders', 6);
+console.log(porsche911);
+
+// {
+//   make: 'Porsche',
+//   name: '911',
+//   displayName: [Function: displayName],
+//   cylinders: 6
+// }
+
+//Reflection 4: apply method
+//calls a target function with arguments as specified.
+
+const porsche911 = {
+  make: 'Porsche',
+  name: '911',
+  displayName: function(modelType) {
+    console.log(`${this.make} ${this.name} ${modelType}`);
+  }
+}
+
+//args of apply should be: pointer to a function, the value of "this" used by the function, the arguments passed to a function in the form of an array 
+Reflect.apply(porsche911.displayName, porsche911, ['GT2RS']); //Porsche 911 GT2RS
+
 
 
 
