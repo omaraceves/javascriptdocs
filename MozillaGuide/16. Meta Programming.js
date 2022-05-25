@@ -281,6 +281,39 @@ const myPorsche = {
 
 let result = console.log(Reflect.get(myPorsche, 'make')); //Porsche
 
+//Reflect 9: Reflect.getOwnPropertyDescriptor()
+//Similar to Object.getOwnPropertyDescriptor(). 
+//It returns a property descriptor of the given property if it exists on the object, undefined otherwise.
+
+const object1 = {
+  make: 'Porsche'
+};
+
+console.log(Reflect.getOwnPropertyDescriptor(object1, 'make'));
+// {
+//   value: 'Porsche',
+//   writable: true,
+//   enumerable: true,
+//   configurable: true
+// }
+
+//Reflect 10: Reflect.isExtensible()
+//The static Reflect.isExtensible() method determines if an object is extensible (whether it can have new properties added to it). 
+//It is similar to Object.isExtensible(), but with some differences.
+
+const object1 = {};
+
+console.log(Reflect.isExtensible(object1)); //true
+
+Reflect.preventExtensions(object1); //Prevents the addition of new properties to an object.
+
+console.log(Reflect.isExtensible(object1)); //false
+
+const object2 = Object.seal({}); //Prevents the modification of attributes of existing properties, and prevents the addition of new properties.
+
+console.log(Reflect.isExtensible(object2)); //false
+
+
 
 
 
