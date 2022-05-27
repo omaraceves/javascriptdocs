@@ -42,3 +42,12 @@ import myDefaultImportFunction from './myModule.mjs'; //Note the lack of curly b
 //The line above is equivalent to: import {default as myDefaultImportFunction} from './modules/square.js';
 
 myDefaultImportFunction(); //Porsche
+
+//Modules and classes
+//You can avoid conflicts in your code by grouping functionality into classes, 
+//and is especially useful if you've already got your module code written in an object-oriented style.
+
+import {Porsche} from './myModule.mjs'; 
+
+const myPorsche = new Porsche('Cayman 718', 4);
+myPorsche.printPorsche(); //Porsche Cayman 718

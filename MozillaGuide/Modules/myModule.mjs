@@ -23,3 +23,21 @@ function printPorsche() {
 //The function printPorsche will be exported as default.
 
 export default printPorsche; //Note the lack of curly braces.
+
+//Modules and classes
+//You can avoid conflicts in your code by grouping functionality into classes, 
+//and is especially useful if you've already got your module code written in an object-oriented style.
+
+class Porsche {
+  constructor(name, cylinders) {
+    this.make = 'Porsche';
+    this.name = name;
+    this.cylinders = cylinders;
+  }
+
+  printPorsche(){
+    console.log(`${this.make} ${this.name}`);
+  }
+}
+
+export {Porsche};
