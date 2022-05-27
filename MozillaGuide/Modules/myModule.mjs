@@ -11,3 +11,15 @@ export function createPorsche(name) {
     name: name,
   };
 }
+
+function printPorsche() {
+  console.log('Porsche');
+}
+
+//Default exports versus named exports
+//The functionality we've exported so far has been comprised of named exports — each item (be it a function, const, etc.) has been referred to by its name upon export, 
+//and that name has been used to refer to it on import as well.
+//Default export this is designed to make it easy to have a default function provided by a module.
+//The function printPorsche will be exported as default.
+
+export default printPorsche; //Note the lack of curly braces.
