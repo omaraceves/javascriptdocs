@@ -51,3 +51,14 @@ import {Porsche} from './myModule.mjs';
 
 const myPorsche = new Porsche('Cayman 718', 4);
 myPorsche.printPorsche(); //Porsche Cayman 718
+
+//Dynamic module loading
+//This allows you to dynamically load modules only when they are needed
+//you to call import() as a function, passing it the path to the module as a parameter. 
+//It returns a Promise, which fulfills with a module object
+
+import('./myModule.mjs')
+  .then((module) => {
+    let myPorsche = module.createPorsche('718 Cayman');
+    return myPorsche;
+  }).then(car => console.log(car)); //{ make: 'Porsche', name: '718 Cayman' }
